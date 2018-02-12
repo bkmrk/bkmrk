@@ -1,0 +1,14 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }} - BKMRK</title>
+        {% else %}
+        <title>Welcome to BKMRK</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>BKMRK: <a href="/index">Home</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
