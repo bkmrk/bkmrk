@@ -1,3 +1,6 @@
+import logging
+from logging.handlers import RotatingFileHandler
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -12,4 +15,15 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 
-from bkmrk import routes, models
+if not app.debug:
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+    file_handler = RotatingFileHandler('logs/bkmrk.logs', maxBytes=10240, backupCount=10)
+    fmt = '(%(asctime)s) [%(levelname)s] %(message)s [in %(pathname)s:%(lineno)d]'
+    file_handler.setFormatter(logging.Formatter(fmt))
+    app.logger.addHandler(file_handler)
+
+    add.logger.setLevel(logging.INFO)
+    add.logger.info('BKMRK Initialized')
+
+from bkmrk import routes, models, errors
