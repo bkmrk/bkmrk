@@ -8,5 +8,5 @@ install:
     - make init
 
 script:
-    - make lint
+    - make check
     - make test

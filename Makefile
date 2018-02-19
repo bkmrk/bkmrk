@@ -1,11 +1,12 @@
-.PHONY: init lint test
+.PHONY: init check test
 
 init:
 	pip install pipenv
 	pipenv install --three --dev
 
-lint:
-	pipenv check --style bkmrk/*.py
+check:
+	pipenv check
+	pipenv check --style bkmrk/*.py bkmrk/tests/*.py
 
 test:
-	pipenv run py.test .
+	pipenv run pytest .
