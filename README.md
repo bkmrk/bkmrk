@@ -1,5 +1,9 @@
 # bkmrk
 
+[![Build Status](https://travis-ci.org/vicyap/bkmrk.svg?branch=master)](https://travis-ci.org/vicyap/bkmrk)
+
+---
+
 Do you ever want save a quote while reading?
 
 ## Developers
