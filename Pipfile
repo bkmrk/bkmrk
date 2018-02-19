@@ -12,15 +12,14 @@ pytest = "*"
 
 [packages]
 
-flask = "*"
-flask-migrate = "*"
-flask-wtf = "*"
-flask-sqlalchemy = "*"
-flask-login = "*"
-flask-mail = "*"
-pyjwt = "*"
-gunicorn = "*"
-pymysql = "*"
+Flask = "*"
+Flask-Migrate = "*"
+Flask-WTF = "*"
+Flask-SQLAlchemy = "*"
+Flask-Login = "*"
+Flask-Mail = "*"
+PyJWT = "*"
+PyMySQL = "*"
 
 
 [requires]
