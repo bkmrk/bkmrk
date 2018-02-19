@@ -5,7 +5,6 @@ init:
 	pipenv install --three --dev
 
 check:
-	pipenv check
 	pipenv check --style bkmrk/*.py bkmrk/tests/*.py
 
 test:
