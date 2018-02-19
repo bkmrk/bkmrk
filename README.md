@@ -44,7 +44,8 @@ analogous operations.
 
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
 
-## Resources
+#### Resources
 
 * [Flask Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
 * [Post/Redirect/Get](https://en.wikipedia.org/wiki/Post/Redirect/Get)
+* [Setting Up HTTPS](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04)
