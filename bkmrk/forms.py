@@ -45,3 +45,11 @@ class EditProfileForm(FlaskForm):
             user = User.query.filter_by(username=self.username.data).first()
             if user is not None:
                 raise ValidationError('Please use a different username.')
+
+
+class BookForm(FlaskForm):
+    isbn = StringField('ISBN', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+    def validate_isbn(self, isbn):
+        pass

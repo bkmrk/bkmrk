@@ -3,18 +3,25 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from bkmrk import app, db
-from bkmrk.models import User
-from bkmrk.forms import LoginForm, RegistrationForm, EditProfileForm
+from bkmrk.models import User, Book
+from bkmrk.forms import LoginForm, RegistrationForm, EditProfileForm, BookForm
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    books = [
-        {'author': 'author', 'title': 'title'},
-    ]
-    return render_template('index.html', title='Home', books=books)
+    form = BookForm()
+    if form.validate_on_submit():
+        book = Book.query.filter_by(isbn13=form.isbn.data).first()
+        if book is None:
+            book = Book(isbn13=form.isbn.data)
+            db.session.add(book)
+            db.session.commit()
+        # TODO: add book to user's books
+        return redirect(url_for('index'))
+    books = current_user.books.all()
+    return render_template('index.html', title='Home', form=form, books=books)
 
 
 @app.route('/login', methods=['GET', 'POST'])
