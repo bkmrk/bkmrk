@@ -20,8 +20,18 @@ def index():
             db.session.commit()
         # TODO: add book to user's books
         return redirect(url_for('index'))
-    books = current_user.books.all()
-    return render_template('index.html', title='Home', form=form, books=books)
+    page = request.args.get('page', 1, type=int)
+    books = current_user.books.paginate(page, app.config['BOOKS_PER_PAGE'], False)
+    next_url = url_for('index', page=books.next_num) if books.has_next else None
+    prev_url = url_for('index', page=books.prev_num) if books.has_prev else None
+    return render_template(
+        'index.html',
+        title='Home',
+        form=form,
+        books=books.items,
+        next_url=next_url,
+        prev_url=prev_url,
+    )
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -68,10 +78,17 @@ def register():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    books = [
-        {'author': 'author', 'title': 'title'},
-    ]
-    return render_template('user.html', user=user, books=books)
+    page = request.args.get('page', 1, type=int)
+    books = current_user.books.paginate(page, app.config['BOOKS_PER_PAGE'], False)
+    next_url = url_for('user', page=books.next_num) if books.has_next else None
+    prev_url = url_for('user', page=books.prev_num) if books.has_prev else None
+    return render_template(
+        'user.html',
+        user=user,
+        books=books.items,
+        next_url=next_url,
+        prev_url=prev_url,
+    )
 
 
 @app.before_request
@@ -125,3 +142,19 @@ def unfollow(username):
     db.session.commit()
     flash('You are not following {}'.format(username))
     return redirect(url_for('user', username=username))
+
+
+@app.route('/explore')
+@login_required
+def explore():
+    page = request.args.get('page', 1, type=int)
+    books = Book.paginate(page, app.config['BOOKS_PER_PAGE'], False)
+    next_url = url_for('explore', page=books.next_num) if books.has_next else None
+    prev_url = url_for('explore', page=books.prev_num) if books.has_prev else None
+    return render_template(
+        'index.html',
+        title='Explore',
+        books=books.items,
+        next_url=next_url,
+        prev_url=prev_url,
+    )
