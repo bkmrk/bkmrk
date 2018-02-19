@@ -2,15 +2,6 @@
 
 Do you ever want save a quote while reading?
 
-## Features
-
-* Follow Users
-
-### WIP
-
-* Add Book Quotes
-* Search Books by {isbn, author, title}
-
 ## Developers
 
 ### Workflow
