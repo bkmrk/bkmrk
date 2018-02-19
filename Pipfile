@@ -10,7 +10,6 @@ name = "pypi"
 pytest = "*"
 
 
-
 [packages]
 
 flask = "*"
@@ -18,6 +17,8 @@ flask-migrate = "*"
 flask-wtf = "*"
 flask-sqlalchemy = "*"
 flask-login = "*"
+flask-mail = "*"
+pyjwt = "*"
 
 
 [requires]
