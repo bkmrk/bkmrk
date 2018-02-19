@@ -1,5 +1,6 @@
 import logging
 from logging.handlers import RotatingFileHandler
+import os
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -23,7 +24,7 @@ if not app.debug:
     file_handler.setFormatter(logging.Formatter(fmt))
     app.logger.addHandler(file_handler)
 
-    add.logger.setLevel(logging.INFO)
-    add.logger.info('BKMRK Initialized')
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('BKMRK Initialized')
 
-from bkmrk import routes, models, errors
+from bkmrk import routes, models, errors  # noqa: F401,F402

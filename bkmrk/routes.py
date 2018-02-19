@@ -2,8 +2,10 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
-from bkmrk import app
+from bkmrk import app, db
+from bkmrk.models import User
 from bkmrk.forms import LoginForm, RegistrationForm, EditProfileForm
+
 
 @app.route('/')
 @app.route('/index')
@@ -27,7 +29,7 @@ def login():
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
-        if not next_page or url_parse(nexst_page).netloc != '':
+        if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
         return redirect(next_page)
     else:
@@ -62,7 +64,7 @@ def user(username):
     books = [
         {'author': 'author', 'title': 'title'},
     ]
-    return render_template('user.html', user=user, posts=posts)
+    return render_template('user.html', user=user, books=books)
 
 
 @app.before_request
