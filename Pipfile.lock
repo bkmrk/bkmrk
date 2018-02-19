@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bd0f67a49dcbc3722d4fe6e0433cc15a71a0f4417210db8f3ecf09a36d517570"
+            "sha256": "7618827a5c335f51f9e03e137f3764fbbfed2662f62f7cb8a084ec8d713dd02a"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -88,6 +88,13 @@
             ],
             "version": "==0.14.2"
         },
+        "gunicorn": {
+            "hashes": [
+                "sha256:75af03c99389535f218cc596c7de74df4763803f7b63eb09d77e92b3956b36c6",
+                "sha256:eee1169f0ca667be05db3351a0960765620dad53f53434262ff8901b68a1b622"
+            ],
+            "version": "==19.7.1"
+        },
         "itsdangerous": {
             "hashes": [
                 "sha256:cbb3fcf8d3e33df861709ecaf89d9e6629cff0a217bc2848f1b41cd30d360519"
@@ -119,6 +126,13 @@
                 "sha256:500be75b17a63f70072416843dc80c8821109030be824f4d14758f114978bae7"
             ],
             "version": "==1.5.3"
+        },
+        "pymysql": {
+            "hashes": [
+                "sha256:04fa19fad017fdb21394fad2878c1d6bd346959d4fbfd1b66050a09fc636a321",
+                "sha256:32da4a66397077d42908e449688f2ec71c2b18892a6cd04f03ab2aa828a70f40"
+            ],
+            "version": "==0.8.0"
         },
         "python-dateutil": {
             "hashes": [

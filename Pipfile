@@ -19,6 +19,8 @@ flask-sqlalchemy = "*"
 flask-login = "*"
 flask-mail = "*"
 pyjwt = "*"
+gunicorn = "*"
+pymysql = "*"
 
 
 [requires]
