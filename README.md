@@ -48,3 +48,7 @@ analogous operations.
 #### Database
 
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
+
+## Resources
+
+* [Post/Redirect/Get](https://en.wikipedia.org/wiki/Post/Redirect/Get)
