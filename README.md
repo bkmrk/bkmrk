@@ -46,4 +46,5 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
 
 ## Resources
 
+* [Flask Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
 * [Post/Redirect/Get](https://en.wikipedia.org/wiki/Post/Redirect/Get)
