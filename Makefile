@@ -13,4 +13,4 @@ test:
 	pipenv run pytest .
 
 coverage:
-	pipenv run pytest --cov=./ .
+	pipenv run pytest --cov-report term-missing --cov=./ .
