@@ -1,6 +1,8 @@
 # bkmrk
 
 [![Build Status](https://travis-ci.org/vicyap/bkmrk.svg?branch=master)](https://travis-ci.org/vicyap/bkmrk)
+[![codecov](https://codecov.io/gh/vicyap/bkmrk/branch/master/graph/badge.svg)](https://codecov.io/gh/vicyap/bkmrk)
+
 
 ---
 
