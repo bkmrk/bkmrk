@@ -1,4 +1,4 @@
-.PHONY: check init test
+.PHONY: check init test coverage
 
 app=bkmrk
 
@@ -11,3 +11,6 @@ check:
 
 test:
 	pipenv run pytest .
+
+coverage:
+	pipenv run pytest --cov=./ .

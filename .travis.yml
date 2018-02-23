@@ -9,4 +9,5 @@ install:
 
 script:
     - make check
-    - make test
+    - make coverage
+    - codecov
