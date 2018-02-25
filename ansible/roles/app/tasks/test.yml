@@ -1,7 +1,7 @@
 ---
 - name: Make test
   make:
-      chdir: /opt/bkmrk
+      chdir: /opt/bkmrk/bkmrk/
       target: test
   become: yes
   become_user: bkmrk
