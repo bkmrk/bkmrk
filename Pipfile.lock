@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b1addcfd0236d9e09274fe585f4f700858296b8a72f6dd058b0864b2f32ee7e1"
+            "sha256": "3cf0c7b3dbef75d79e2c6a1e9b24873fec5ac1591d5899bf74366df3f543cc65"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -85,6 +85,13 @@
                 "sha256:b709ca8642559c3c5a81a33ab10839fa052177accd5ba821047a99db635255ed"
             ],
             "version": "==2.1.1"
+        },
+        "flask-moment": {
+            "hashes": [
+                "sha256:71a601fcd5be4742227251641cb706c109680b54c5fb25c5d2ed96e576ec3b4d",
+                "sha256:af7ccd599d85e751ff1f7661904daa51df9950e9bc9bd4ccf174bd38ccbc401f"
+            ],
+            "version": "==0.6.0"
         },
         "flask-sqlalchemy": {
             "hashes": [
@@ -284,6 +291,7 @@
                 "sha256:87f837459c3c78d75cb4f5aadf08a7104db15e8c7618a5c732e60f252279c7a6",
                 "sha256:df9083a992b17a28cd4251a3f5c879e0198bb26c9e808c4647e0a18739f1d11d"
             ],
+            "markers": "platform_python_implementation != 'PyPy'",
             "version": "==1.11.4"
         },
         "chardet": {
@@ -383,7 +391,7 @@
                 "sha256:8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1",
                 "sha256:2d81cbbe0e73112bdfe6ef8576f2238f2ba27dd0d55752a776c41d38b7da2850"
             ],
-            "markers": "python_version < '3.4'",
+            "markers": "python_version < '3'",
             "version": "==1.1.6"
         },
         "flake8": {

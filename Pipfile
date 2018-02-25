@@ -26,6 +26,7 @@ pyjwt = "*"
 pymysql = "*"
 gunicorn = "*"
 flask-bootstrap = "*"
+flask-moment = "*"
 
 
 [requires]
