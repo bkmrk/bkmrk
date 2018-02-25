@@ -1,4 +1,4 @@
-.PHONY: check travis test coverage init
+.PHONY: check travis test coverage init run
 
 app=bkmrk
 
@@ -17,3 +17,6 @@ test:
 
 coverage:
 	pipenv run pytest --cov-report term-missing --cov=./ .
+
+run:
+	pipenv run flask run
