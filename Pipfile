@@ -23,6 +23,7 @@ flask-mail = "*"
 pyjwt = "*"
 pymysql = "*"
 gunicorn = "*"
+ansible = "*"
 
 
 [requires]

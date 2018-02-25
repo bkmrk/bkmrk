@@ -1,4 +1,4 @@
 .PHONY: check
 
 check:
-	ansible-playbook --syntax-check -i inventory site.yml
+	pipenv run ansible-playbook --syntax-check -i inventory site.yml
