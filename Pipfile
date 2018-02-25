@@ -11,6 +11,7 @@ pytest = "*"
 pytest-cov = "*"
 codecov = "*"
 ansible = "*"
+"flake8" = "*"
 
 
 [packages]
