@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
     <h1>User: {{ user.username }}</h1>
     {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
     <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
