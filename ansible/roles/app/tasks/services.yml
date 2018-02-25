@@ -1,0 +1,17 @@
+---
+- name: Restart nginx service
+  service:
+      name: nginx
+      state: restarted
+      enabled: true
+
+- name: Restart supervisor service
+  service:
+      name: supervisor
+      state: restarted
+      enabled: true
+
+- name: Restart bkmrk supervisor service
+  supervisorctl:
+      name: 'bkmrk'
+      state: restarted

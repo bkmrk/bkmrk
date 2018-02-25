@@ -1,0 +1,15 @@
+---
+- name: Configure supervisor
+  copy:
+      remote_src: yes
+      src: /opt/bkmrk/ansible/files/etc/supervisor/conf.d/bkmrk.conf
+      dest: /etc/supervisor/conf.d/bkmrk.conf
+
+- name: Configure nginx
+  copy:
+      remote_src: yes
+      src: /opt/bkmrk/ansible/files/etc/nginx/sites-available/default
+      dest: /etc/nginx/sites-available/default
+
+- name: Verify nginx config
+  command: nginx -t

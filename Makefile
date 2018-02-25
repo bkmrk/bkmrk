@@ -1,9 +1,12 @@
-.PHONY: check init test coverage
+.PHONY: check travis test coverage init
 
 app=bkmrk
 
-init:
+travis:
 	pip install pipenv
+	pipenv install --three --dev
+
+init:
 	pipenv install --three --dev
 
 check:

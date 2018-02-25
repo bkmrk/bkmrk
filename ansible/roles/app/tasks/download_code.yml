@@ -1,0 +1,18 @@
+---
+- name: Delete existing bkmrk code
+  file:
+      path: /opt/bkmrk/
+      state: absent
+
+- name: Git checkout code
+  git:
+      repo: 'https://github.com/vicyap/bkmrk.git'
+      dest: /opt/bkmrk/
+
+- name: Chown /opt/bkmrk/ for bkmrk user
+  file:
+      path: /opt/bkmrk/
+      owner: bkmrk
+      group: bkmrk
+      state: directory
+      recurse: yes

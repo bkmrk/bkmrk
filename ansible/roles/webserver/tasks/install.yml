@@ -1,0 +1,25 @@
+---
+- name: Add certbot ppa
+  apt_repository:
+      repo: "ppa:certbot/certbot"
+
+- name: Update apt repo
+  apt:
+      update_cache: yes
+
+- name: Install Packages
+  apt:
+      name: "{{ item }}"
+      state: latest
+  with_items:
+      - nginx
+      - git
+      - ufw
+      - python3
+      - python-pip
+      - supervisor
+      - python-certbot-nginx
+
+- name: Pip install pipenv
+  pip:
+      name: pipenv

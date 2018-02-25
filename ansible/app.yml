@@ -1,6 +1,6 @@
 ---
-# file: webservers.yml
+# file: app.yml
 - hosts: webservers
   roles:
       - common
-      - webserver
+      - app

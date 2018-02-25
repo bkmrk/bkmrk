@@ -1,0 +1,7 @@
+---
+- name: Make init
+  make:
+      chdir: '/home/bkmrk/bkmrk'
+      target: init
+  become: yes
+  become_user: bkmrk

@@ -1,0 +1,15 @@
+---
+- name: Obtain ssl certs
+  command: certbot --agree-tos -m beta.bkmrk@gmail.com -n --nginx -d beta.bkmrk.life
+  register: certbot
+
+- name: Print certbot stdout
+  debug:
+      msg: "{{ certbot.stdout }}"
+
+- name: Print certbot stderr
+  debug:
+      msg: "{{ certbot.stderr }}"
+
+- name: Test ssl cert renewal
+  command: certbot renew --dry-run

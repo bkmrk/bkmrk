@@ -1,0 +1,19 @@
+---
+- name: Set ufw rules
+  ufw:
+      rule: allow
+      port: "{{ item }}"
+  with_items:
+      - ssh
+      - http
+      - https
+
+- name: Set ufw rate limiting
+  ufw:
+      rule: limit
+      port: ssh
+      proto: tcp
+
+- name: Enable ufw
+  ufw:
+      state: enabled
