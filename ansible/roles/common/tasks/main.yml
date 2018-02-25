@@ -1,0 +1,5 @@
+---
+- assert:
+    that:
+        - "ansible_distribution == 'Ubuntu'"
+        - "ansible_pkg_mgr == 'apt'"
