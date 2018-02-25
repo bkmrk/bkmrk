@@ -1,1 +1,4 @@
-from bkmrk import app
+from bkmrk import create_app
+
+
+app = create_app()

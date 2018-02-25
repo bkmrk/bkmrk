@@ -27,6 +27,7 @@ pymysql = "*"
 gunicorn = "*"
 flask-bootstrap = "*"
 flask-moment = "*"
+python-dotenv = "*"
 
 
 [requires]
