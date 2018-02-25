@@ -10,7 +10,7 @@ init:
 	pipenv install --three --dev
 
 check:
-	pipenv run flake8 $(app)/*.py $(app)/tests/*.py
+	pipenv check --style $(app)/*.py $(app)/tests/*.py
 
 test:
 	pipenv run pytest .
