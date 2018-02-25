@@ -1,13 +1,13 @@
 ---
 - name: Delete existing bkmrk code
   file:
-      path: /opt/bkmrk/bkmrk
+      path: /opt/bkmrk/bkmrk/
       state: absent
 
 - name: Git checkout code
   git:
       repo: 'https://github.com/vicyap/bkmrk.git'
-      dest: /opt/bkmrk/bkmrk
+      dest: /opt/bkmrk/bkmrk/
 
 - name: Chown /opt/bkmrk/ for bkmrk user
   file:
