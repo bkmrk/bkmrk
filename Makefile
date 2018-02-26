@@ -6,7 +6,7 @@ init:
 	pipenv install --three --dev
 
 check:
-	pipenv check --style $(app)/*.py $(app)/tests/*.py
+	pipenv run pycodestyle
 
 test:
 	pipenv run pytest .

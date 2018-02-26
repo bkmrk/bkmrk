@@ -2,32 +2,9 @@ from datetime import datetime, timedelta
 
 import pytest
 
-import bkmrk
+from .fixtures import *
+
 from bkmrk.models import User, BookQuote
-
-from ..config import Config
-
-
-class TestConfig(Config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
-
-
-@pytest.fixture
-def app():
-    app = bkmrk.create_app(TestConfig)
-    app_context = app.app_context()
-    app_context.push()
-    yield app
-    app_context.pop()
-
-
-@pytest.fixture
-def db(app):
-    bkmrk.db.create_all()
-    yield bkmrk.db
-    bkmrk.db.session.remove()
-    bkmrk.db.drop_all()
 
 
 @pytest.fixture
