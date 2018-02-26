@@ -2,10 +2,6 @@
 
 app=bkmrk
 
-travis:
-	pip install pipenv
-	pipenv install --three --dev
-
 init:
 	pipenv install --three --dev
 
