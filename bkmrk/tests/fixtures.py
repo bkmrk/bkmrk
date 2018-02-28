@@ -29,4 +29,5 @@ def db(app):
 
 @pytest.fixture
 def client(app, db):
-    return app.test_client()
+    with app.test_client() as c:
+        return c
