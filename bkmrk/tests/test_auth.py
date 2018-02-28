@@ -20,8 +20,8 @@ def test_register_form(client):
         'csrf_token': csrf_token,
         'username': 'username',
         'email': 'test@email.com',
-        'password': 'a'*12,
-        'password_repeat': 'a'*12,
+        'password': 'a' * 12,
+        'password_repeat': 'a' * 12,
     }
     resp = client.post('/auth/register', data=payload)
     assert resp.status_code == 302
