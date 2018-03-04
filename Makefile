@@ -5,8 +5,6 @@ run=pipenv run
 
 db:
 	$(run) flask db init
-	$(run) flask db migrate
-	$(run) flask db upgrade
 
 init:
 	pipenv install --three --dev
