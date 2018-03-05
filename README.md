@@ -1,7 +1,7 @@
 # bkmrk
 
 [![Build Status](https://travis-ci.org/vicyap/bkmrk.svg?branch=master)](https://travis-ci.org/vicyap/bkmrk)
-[![codecov](https://codecov.io/gh/vicyap/bkmrk/branch/master/graph/badge.svg)](https://codecov.io/gh/vicyap/bkmrk)
+[![Coverage Status](https://coveralls.io/repos/github/vicyap/bkmrk/badge.svg?branch=master)](https://coveralls.io/github/vicyap/bkmrk?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f8cc867b3d1ec2ddd655/maintainability)](https://codeclimate.com/github/vicyap/bkmrk/maintainability)
 
 ---
