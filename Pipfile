@@ -12,6 +12,7 @@ pytest-cov = "*"
 codecov = "*"
 ansible = "*"
 pycodestyle = "*"
+coveralls = "*"
 
 
 [packages]

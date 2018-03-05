@@ -13,4 +13,5 @@ script:
 
 after_script:
     - make coverage
-    - codecov
+    - pipenv run codecov
+    - pipenv run coveralls
