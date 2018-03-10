@@ -58,3 +58,11 @@ def test_register_fail_existing(user1, user2, email1, email2, client):
     resp = utils.register_user(client, user2)
 
     assert resp.status_code == 200
+
+
+def test_register_already_authenticated(client, user):
+    utils.login_user(client, user)
+    resp = client.get(url_for('auth.register'))
+
+    assert resp.status_code == 302
+    assert resp.headers.get('location') == url_for('main.index')

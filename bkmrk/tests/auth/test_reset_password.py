@@ -52,3 +52,11 @@ def test_reset_password(client, user):
     resp = utils.login_user(client, user)
     assert resp.status_code == 302
     assert resp.headers.get('location') == url_for('main.index')
+
+
+def test_reset_password_already_authenticated(client, user):
+    utils.login_user(client, user)
+    resp = utils.reset_password(client, user)
+
+    assert resp.status_code == 302
+    assert resp.headers.get('location') == url_for('main.index')

@@ -30,3 +30,11 @@ def test_login_fail_wrong_passwd(client, user):
 
     assert resp.status_code == 302
     assert resp.headers.get('location') == url_for('auth.login')
+
+
+def test_login_already_authenticated(client, user):
+    utils.login_user(client, user)
+    resp = utils.login_user(client, user)
+
+    assert resp.status_code == 302
+    assert resp.headers.get('location') == url_for('main.index')
