@@ -13,30 +13,16 @@ def before_request():
     pass
 
 
-@bp.route('/', methods=['GET', 'POST'])
-@bp.route('/index', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET'])
+@bp.route('/index', methods=['GET'])
+@bp.route('/home', methods=['GET'])
 @login_required
 def index():
-    form = BookForm()
-    if form.validate_on_submit():
-        book = Book.query.filter_by(isbn13=form.isbn.data).first()
-        if book is None:
-            book = Book(isbn13=form.isbn.data)
-            db.session.add(book)
-            db.session.commit()
-        # TODO: add book to user's books
-        return redirect(url_for('main.index'))
-    page = request.args.get('page', 1, type=int)
-    books = current_user.books.paginate(page, current_app.config['BOOKS_PER_PAGE'], False)
-    next_url = url_for('index', page=books.next_num) if books.has_next else None
-    prev_url = url_for('index', page=books.prev_num) if books.has_prev else None
+    books = current_user.books
     return render_template(
         'index.html',
         title='Home',
-        form=form,
-        books=books.items,
-        next_url=next_url,
-        prev_url=prev_url,
+        books=books,
     )
 
 
@@ -44,16 +30,11 @@ def index():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    page = request.args.get('page', 1, type=int)
-    books = current_user.books.paginate(page, current_app.config['BOOKS_PER_PAGE'], False)
-    next_url = url_for('main.user', page=books.next_num) if books.has_next else None
-    prev_url = url_for('main.user', page=books.prev_num) if books.has_prev else None
+    books = current_user.books
     return render_template(
         'user.html',
         user=user,
-        books=books.items,
-        next_url=next_url,
-        prev_url=prev_url,
+        books=books,
     )
 
 
@@ -66,56 +47,38 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash('Your changes have been saved')
-        return redirect(url_for('main.edit_profile'))
+        return redirect(url_for('main.user', username=current_user.username))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile', form=form)
-
-
-@bp.route('/follow/<username>')
-@login_required
-def follow(username):
-    user = User.query.filter_by(username=username).first()
-    if user is None:
-        flash('User {} not found.'.format(username))
-        return redirect(url_for('main.index'))
-    if user == current_user:
-        flash('you cannot follow yourself!')
-        return redirect(url_for('main.user', username=username))
-    current_user.follow(user)
-    db.session.commit()
-    flash('You are following {}'.format(username))
-    return redirect(url_for('main.user', username=username))
-
-
-@bp.route('/unfollow/<username>')
-@login_required
-def unfollow(username):
-    user = User.query.filter_by(username=username).first()
-    if user is None:
-        flash('User {} not found'.format(username))
-        return redirect(url_for('main.index'))
-    if user == current_user:
-        flash('You cannot unfollow yourself!')
-        return redirect(url_for('main.user', username=username))
-    current_user.unfollow(user)
-    db.session.commit()
-    flash('You are not following {}'.format(username))
-    return redirect(url_for('main.user', username=username))
-
-
-@bp.route('/explore')
-@login_required
-def explore():
-    page = request.args.get('page', 1, type=int)
-    books = Book.paginate(page, current_app.config['BOOKS_PER_PAGE'], False)
-    next_url = url_for('main.explore', page=books.next_num) if books.has_next else None
-    prev_url = url_for('main.explore', page=books.prev_num) if books.has_prev else None
-    return render_template(
-        'index.html',
-        title='Explore',
-        books=books.items,
-        next_url=next_url,
-        prev_url=prev_url,
-    )
+# @bp.route('/follow/<username>')
+# @login_required
+# def follow(username):
+#     user = User.query.filter_by(username=username).first()
+#     if user is None:
+#         flash('User {} not found.'.format(username))
+#         return redirect(url_for('main.index'))
+#     if user == current_user:
+#         flash('you cannot follow yourself!')
+#         return redirect(url_for('main.user', username=username))
+#     current_user.follow(user)
+#     db.session.commit()
+#     flash('You are following {}'.format(username))
+#     return redirect(url_for('main.user', username=username))
+#
+#
+# @bp.route('/unfollow/<username>')
+# @login_required
+# def unfollow(username):
+#     user = User.query.filter_by(username=username).first()
+#     if user is None:
+#         flash('User {} not found'.format(username))
+#         return redirect(url_for('main.index'))
+#     if user == current_user:
+#         flash('You cannot unfollow yourself!')
+#         return redirect(url_for('main.user', username=username))
+#     current_user.unfollow(user)
+#     db.session.commit()
+#     flash('You are not following {}'.format(username))
+#     return redirect(url_for('main.user', username=username))

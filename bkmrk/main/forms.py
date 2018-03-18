@@ -7,7 +7,7 @@ from bkmrk.models import User
 
 
 class EditProfileForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired])
+    username = StringField('Username', validators=[DataRequired()])
     about_me = TextAreaField('About Me', validators=[Length(min=0, max=140)])
     submit = SubmitField('Submit')
 
@@ -25,6 +25,5 @@ class EditProfileForm(FlaskForm):
 class BookForm(FlaskForm):
     isbn = StringField('ISBN', validators=[DataRequired()])
     submit = SubmitField('Submit')
-
-    def validate_isbn(self, isbn):
-        pass
+    # def validate_isbn(self, isbn):
+    #     pass

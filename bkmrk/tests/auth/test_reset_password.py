@@ -25,7 +25,6 @@ def test_any_email(email, client, user):
         'email': email,
     }
     resp = client.post(url_for('auth.reset_password_request'), data=payload)
-
     assert resp.status_code == 302
     assert resp.headers.get('location') == url_for('auth.login')
 
@@ -46,7 +45,7 @@ def test_reset_password(client, user):
         'password': new_password,
         'password_repeat': new_password,
     }
-    resp = client.post(url, data=payload)
+    client.post(url, data=payload)
 
     user['password'] = new_password
     resp = utils.login_user(client, user)
@@ -54,9 +53,21 @@ def test_reset_password(client, user):
     assert resp.headers.get('location') == url_for('main.index')
 
 
-def test_reset_password_already_authenticated(client, user):
+def test_reset_password_request_already_authenticated(client, user):
     utils.login_user(client, user)
     resp = utils.reset_password(client, user)
+    assert resp.status_code == 302
+    assert resp.headers.get('location') == url_for('main.index')
 
+
+def test_reset_password_already_authenticated(client, user):
+    utils.login_user(client, user)
+    resp = client.get(url_for('auth.reset_password', token='t'))
+    assert resp.status_code == 302
+    assert resp.headers.get('location') == url_for('main.index')
+
+
+def test_reset_password_wrong_token(client, user):
+    resp = client.get(url_for('auth.reset_password', token='t'))
     assert resp.status_code == 302
     assert resp.headers.get('location') == url_for('main.index')

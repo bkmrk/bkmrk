@@ -50,9 +50,6 @@ class User(UserMixin, db.Model):
         secondaryjoin=(followers.c.followed_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
-    def __repr__(self):
-        return '<User {}>'.format(self.username)
-
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -88,16 +85,13 @@ class User(UserMixin, db.Model):
         try:
             id = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])['reset_password']
         except Exception:
-            return
+            return None
         return User.query.get(id)
 
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     isbn13 = db.Column(db.Integer)
-
-    def __repr__(self):
-        return '<Post {}>'.format(self.isbn13)
 
 
 class BookQuote(db.Model):

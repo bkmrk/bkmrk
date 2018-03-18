@@ -28,7 +28,6 @@ def test_register_fail_validators(username, email, password, password_repeat, cl
         'password_repeat': password_repeat,
     }
     resp = utils.register_user(client, user)
-
     assert resp.status_code == 200
 
 
@@ -45,7 +44,6 @@ def test_register_fail_existing(user1, user2, email1, email2, client):
         'password': 'a' * 12,
     }
     resp = utils.register_user(client, user1)
-
     assert resp.status_code == 302
 
     client.get(url_for('auth.register'))
@@ -56,13 +54,11 @@ def test_register_fail_existing(user1, user2, email1, email2, client):
         'password': 'a' * 12,
     }
     resp = utils.register_user(client, user2)
-
     assert resp.status_code == 200
 
 
 def test_register_already_authenticated(client, user):
     utils.login_user(client, user)
     resp = client.get(url_for('auth.register'))
-
     assert resp.status_code == 302
     assert resp.headers.get('location') == url_for('main.index')

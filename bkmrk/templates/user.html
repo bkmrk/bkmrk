@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h1>User: {{ user.username }}</h1>
-    {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-    <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
+    <h1>{{ user.username }}</h1>
     {% if user == current_user %}
-    <p><a href="{{ url_for('main.edit_profile' }}">Edit Profile</a></p>
-    {% elif not current_user.is_following(user) %}
-    <p><a href="{{ url_for('main.follow', username=user.username) }}">Follow</a></p>
-    {% else %}
-    <p><a href="{{ url_for('main.unfollow', username=user.username) }}">Unfollow</a></p>
+    <p><a href="{{ url_for('main.edit_profile') }}">Edit Profile</a></p>
+    {% endif %}
+    <hr>
+    {% if user.about_me %}
+    <h2>About Me</h2><br>
+    <p>{{ user.about_me }}</p>
     {% endif %}
     <hr>
     {% for book in books %}
@@ -17,18 +16,4 @@
     {{ book.author }} - {{ book.title }}
     </p>
     {% endfor %}
-    <nav aria-label="...">
-        <ul class="pager">
-            <li class="prev{% if not prev_url %} disabled{% endif %}">
-                <a href="{{ prev_url or '#' }}">
-                    <span aria-hidden="true">&larr;</span> Newer
-                </a>
-            </li>
-            <li class="next{% if not next_url %} disabled{% endif %}">
-                <a href="{{ next_url or '#' }}">
-                    Older <span aria-hidden="true">&rarr;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
 {% endblock %}
