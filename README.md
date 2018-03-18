@@ -20,17 +20,11 @@ Set up [pipenv](https://docs.pipenv.org/).
 
 `pip install pipenv`
 
-Set up environment.
-
-`source ./ENV`
-
 #### Run
 
-I mainly run things through `pipenv run <cmd>`.
-
+I mainly run commands through `pipenv run <cmd>`.
 
 ```
-source ./ENV
 pipenv run flask run
 ```
 
