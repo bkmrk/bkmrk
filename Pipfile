@@ -31,6 +31,7 @@ flask-bootstrap = "*"
 flask-moment = "*"
 python-dotenv = "*"
 elasticsearch = "*"
+requests = "*"
 
 
 [requires]

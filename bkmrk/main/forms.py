@@ -22,8 +22,6 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError('Please use a different username.')
 
 
-class BookForm(FlaskForm):
-    isbn = StringField('ISBN', validators=[DataRequired()])
+class SearchForm(FlaskForm):
+    query = StringField('Query', validators=[DataRequired()])
     submit = SubmitField('Submit')
-    # def validate_isbn(self, isbn):
-    #     pass

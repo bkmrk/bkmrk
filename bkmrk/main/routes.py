@@ -3,9 +3,11 @@ from flask_login import current_user, login_required
 from werkzeug.urls import url_parse
 
 from bkmrk import db
-from bkmrk.main.forms import EditProfileForm, BookForm
+from bkmrk.main.forms import EditProfileForm, SearchForm
 from bkmrk.models import User, Book
 from bkmrk.main import bp
+
+from ..openlibrary.client import OpenLibraryClient
 
 
 @bp.before_app_request
@@ -52,33 +54,24 @@ def edit_profile():
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile', form=form)
-# @bp.route('/follow/<username>')
-# @login_required
-# def follow(username):
-#     user = User.query.filter_by(username=username).first()
-#     if user is None:
-#         flash('User {} not found.'.format(username))
-#         return redirect(url_for('main.index'))
-#     if user == current_user:
-#         flash('you cannot follow yourself!')
-#         return redirect(url_for('main.user', username=username))
-#     current_user.follow(user)
-#     db.session.commit()
-#     flash('You are following {}'.format(username))
-#     return redirect(url_for('main.user', username=username))
-#
-#
-# @bp.route('/unfollow/<username>')
-# @login_required
-# def unfollow(username):
-#     user = User.query.filter_by(username=username).first()
-#     if user is None:
-#         flash('User {} not found'.format(username))
-#         return redirect(url_for('main.index'))
-#     if user == current_user:
-#         flash('You cannot unfollow yourself!')
-#         return redirect(url_for('main.user', username=username))
-#     current_user.unfollow(user)
-#     db.session.commit()
-#     flash('You are not following {}'.format(username))
-#     return redirect(url_for('main.user', username=username))
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    results = {}
+    if form.validate_on_submit():
+        query = form.query.data
+        return redirect(url_for('main.search', q=query))
+    elif request.method == 'GET':
+        q = request.args.get('q')
+        if q is not None:
+            client = OpenLibraryClient()
+            results = client.search(q=q, limit=10)
+    return render_template(
+        'search.html',
+        title='Search',
+        form=form,
+        results=results,
+    )
