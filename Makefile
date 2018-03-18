@@ -19,4 +19,4 @@ coverage:
 	$(run) pytest --cov-report term-missing --cov=./ .
 
 run:
-	$(run) flask run
+	FLASK_APP=flask_run.py FLASK_DEBUG=1 $(run) flask run
