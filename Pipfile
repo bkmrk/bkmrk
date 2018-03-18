@@ -13,6 +13,7 @@ codecov = "*"
 ansible = "*"
 pycodestyle = "*"
 coveralls = "*"
+pytest-xdist = "*"
 
 
 [packages]
