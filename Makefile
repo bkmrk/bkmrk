@@ -1,12 +1,19 @@
-.PHONY: check travis test coverage init run db
+.PHONY: check travis test coverage init run db clean-db
 
 app=bkmrk
 run=pipenv run
+env=FLASK_APP=flask_run.py FLASK_DEBUG=1
+
+clean-db:
+	rm -rf migrations
+	rm bkmrk/app.db
 
 db:
-	$(run) flask db init
+	$(env) $(run) flask db init
+	$(env) $(run) flask db migrate
+	$(env) $(run) flask db upgrade
 
-init:
+install:
 	pipenv install --three --dev
 
 check:
@@ -19,4 +26,4 @@ coverage:
 	$(run) pytest --cov-report term-missing --cov=./ .
 
 run:
-	FLASK_APP=flask_run.py FLASK_DEBUG=1 $(run) flask run
+	$(env) $(run) flask run

@@ -23,5 +23,17 @@ class EditProfileForm(FlaskForm):
 
 
 class SearchForm(FlaskForm):
-    query = StringField('Query', validators=[DataRequired()])
+    isbn = StringField('ISBN', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+    def validate_isbn(self, isbn):
+        if len(isbn.data) != 10 and len(isbn.data) != 13:
+            raise ValidationError("ISBN length should be either 10 or 13 digits.")
+
+
+class AddBookForm(FlaskForm):
+    submit = SubmitField('Add Book')
+
+
+class RemoveBookForm(FlaskForm):
+    submit = SubmitField('Remove Book')

@@ -3,11 +3,10 @@ from flask_login import current_user, login_required
 from werkzeug.urls import url_parse
 
 from bkmrk import db
-from bkmrk.main.forms import EditProfileForm, SearchForm
+from bkmrk import utils
+from bkmrk.main.forms import EditProfileForm, SearchForm, AddBookForm, RemoveBookForm
 from bkmrk.models import User, Book
 from bkmrk.main import bp
-
-from ..openlibrary.client import OpenLibraryClient
 
 
 @bp.before_app_request
@@ -21,6 +20,7 @@ def before_request():
 @login_required
 def index():
     books = current_user.books
+    books = [utils.get_openlibrary_book(book.isbn) for book in books]
     return render_template(
         'index.html',
         title='Home',
@@ -60,18 +60,57 @@ def edit_profile():
 @login_required
 def search():
     form = SearchForm()
-    results = {}
     if form.validate_on_submit():
-        query = form.query.data
-        return redirect(url_for('main.search', q=query))
-    elif request.method == 'GET':
-        q = request.args.get('q')
-        if q is not None:
-            client = OpenLibraryClient()
-            results = client.search(q=q, limit=10)
+        isbn = form.isbn.data
+        return redirect(url_for('main.search', isbn=isbn))
+
+    books = []
+    if request.method == 'GET':
+        isbn = request.args.get('isbn')
+        if isbn:
+            if len(isbn) == 10:
+                isbn = '978{}'.format(isbn)
+            ol_book = utils.get_openlibrary_book(isbn)
+            if ol_book:
+                book = Book.query.filter_by(isbn=isbn).first()
+                if book is None:
+                    book = Book(isbn=isbn)
+                    db.session.add(book)
+                    db.session.commit()
+                ol_book['id'] = book.id
+                books.append(ol_book)
     return render_template(
         'search.html',
         title='Search',
         form=form,
-        results=results,
+        books=books,
+    )
+
+
+@bp.route('/book/<id>', methods=['GET', 'POST'])
+@login_required
+def book(id):
+    book = Book.query.filter_by(id=id).first_or_404()
+
+    # figure out if the user has added this book
+    if book in current_user.books:
+        form = RemoveBookForm()
+    else:
+        form = AddBookForm()
+
+    if form.validate_on_submit():
+        if book in current_user.books:
+            current_user.books.remove(book)
+            db.session.commit()
+        else:
+            current_user.books.append(book)
+            db.session.commit()
+        return redirect(url_for('main.book', id=book.id))
+
+    ol_book = utils.get_openlibrary_book(book.isbn)
+    return render_template(
+        'book.html',
+        title=ol_book.get('title'),
+        form=form,
+        book=ol_book,
     )

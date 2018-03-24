@@ -9,11 +9,10 @@
             {{ wtf.quick_form(form) }}
         </div>
     </div>
-    {% if results %}
-    <h2>Results</h2>
+    {% if books %}
     <hr>
-    {% for doc in results.docs %}
-    <p>{{ doc.title }}</p><br>
+    {% for book in books %}
+    <p><a href="{{ url_for('main.book', id=book.id) }}">{{ book.title }}</a></p>
     {% endfor %}
     {% endif %}
 {% endblock %}

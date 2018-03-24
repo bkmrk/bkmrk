@@ -7,30 +7,31 @@ name = "pypi"
 
 [dev-packages]
 
+ansible = "*"
+coveralls = "*"
+pycodestyle = "*"
 pytest = "*"
 pytest-cov = "*"
-codecov = "*"
-ansible = "*"
-pycodestyle = "*"
-coveralls = "*"
 pytest-xdist = "*"
+molecule = "*"
 
 
 [packages]
 
+elasticsearch = "*"
 flask = "*"
-flask-migrate = "*"
-flask-wtf = "*"
-flask-sqlalchemy = "*"
+flask-bootstrap = "*"
 flask-login = "*"
 flask-mail = "*"
+flask-migrate = "*"
+flask-moment = "*"
+flask-sqlalchemy = "*"
+flask-wtf = "*"
+gunicorn = "*"
+openlibrary-api = "*"
 pyjwt = "*"
 pymysql = "*"
-gunicorn = "*"
-flask-bootstrap = "*"
-flask-moment = "*"
 python-dotenv = "*"
-elasticsearch = "*"
 requests = "*"
 
 

@@ -2,6 +2,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 
+from openlibrary_api.client import OpenLibraryClient
+
 
 def init_file_logger(app, log_dir='logs'):
     """Initialize a rotating file logger."""
@@ -13,3 +15,11 @@ def init_file_logger(app, log_dir='logs'):
     app.logger.addHandler(file_handler)
     app.logger.setLevel(logging.INFO)
     app.logger.info('BKMRK Initialized')
+
+
+def get_openlibrary_book(isbn, client=None):
+        if client is None:
+            client = OpenLibraryClient()
+        bibkey = 'ISBN:{}'.format(isbn)
+        ol_book = client.books(bibkeys=bibkey, format='json', jscmd='data')
+        return ol_book.get(bibkey)
