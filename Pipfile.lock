@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2af700098be8a2dea7303a265583c0d55f8b554474fb265b78f613bb0f20fd5f"
+            "sha256": "1af262849911a1a1e99cdadfc47f5d2b986e6dd0e93409d01998b6022e04784a"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -168,11 +168,8 @@
             "version": "==1.0"
         },
         "openlibrary-api": {
-            "hashes": [
-                "sha256:f3f3bece56d87e59ba973e1e7b6d087528abf28d9c3759748565cbbdc5120bcf",
-                "sha256:6c41d71b118672ff55fe47abfffa6eafa90d74c9593764ff0039cd888d4e0368"
-            ],
-            "version": "==0.1.0"
+            "editable": true,
+            "git": "https://github.com/vicyap/openlibrary-api.git"
         },
         "pyjwt": {
             "hashes": [
@@ -520,7 +517,7 @@
                 "sha256:8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1",
                 "sha256:2d81cbbe0e73112bdfe6ef8576f2238f2ba27dd0d55752a776c41d38b7da2850"
             ],
-            "markers": "python_version < '3'",
+            "markers": "python_version < '3.4'",
             "version": "==1.1.6"
         },
         "execnet": {
@@ -577,7 +574,6 @@
             "hashes": [
                 "sha256:200d8686011d470b5e4de207d803445deee427455cd0cb7c982b68cf82524f81"
             ],
-            "markers": "python_version < '3'",
             "version": "==1.0.19"
         },
         "jinja2": {

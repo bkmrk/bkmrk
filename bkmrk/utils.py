@@ -18,8 +18,8 @@ def init_file_logger(app, log_dir='logs'):
 
 
 def get_openlibrary_book(isbn, client=None):
-        if client is None:
-            client = OpenLibraryClient()
-        bibkey = 'ISBN:{}'.format(isbn)
-        ol_book = client.books(bibkeys=bibkey, format='json', jscmd='data')
-        return ol_book.get(bibkey)
+    if client is None:
+        client = OpenLibraryClient()
+    bibkey = 'ISBN:{}'.format(isbn)
+    ol_book = client.books(bibkeys=bibkey, format='json', jscmd='data')
+    return ol_book.get(bibkey)

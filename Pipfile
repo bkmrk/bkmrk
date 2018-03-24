@@ -28,7 +28,7 @@ flask-moment = "*"
 flask-sqlalchemy = "*"
 flask-wtf = "*"
 gunicorn = "*"
-openlibrary-api = "*"
+openlibrary-api = {git = "https://github.com/vicyap/openlibrary-api.git", editable=true}
 pyjwt = "*"
 pymysql = "*"
 python-dotenv = "*"
