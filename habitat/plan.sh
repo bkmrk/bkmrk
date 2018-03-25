@@ -36,12 +36,16 @@ do_build() {
 }
 
 do_install() {
-  mv bkmrk "${pkg_prefix}"
-  pushd "${pkg_prefix}/bkmrk"
+  pushd "${pkg_prefix}"
+  rm -rf bkmrk
+  git clone https://github.com/vicyap/bkmrk
+  pushd bkmrk
+  git checkout $pkg_version
   pip install pipenv
   export LC_ALL="en_US.utf8"
   export LANG="en_US.utf8"
   export PIPENV_VENV_IN_PROJECT=1
   pipenv install
+  popd
   popd
 }
