@@ -7,7 +7,6 @@ cd {{ pkg.path }}/bkmrk
 
 # Set some environment variables
 source .venv/bin/activate
-FLASK_APP=flask_run.py
 
 # Run the command
 gunicorn -b localhost:8000 -w 4 flask_run:app

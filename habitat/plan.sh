@@ -2,33 +2,19 @@ HAB_BLDR_CHANNEL=unstable
 
 pkg_name=bkmrk
 pkg_origin=bkmrk
+# TODO: set pkg_version to bumpversion
 # pkg_version="0.1.0"
 pkg_version="master"
 pkg_maintainer="Victor Yap <mail.bkmrk@gmail.com>"
 pkg_license=("MIT")
-# pkg_source=""
 pkg_filename="${pkg_name}-${pkg_version}.tar.bz2"
 pkg_deps=(core/python)
 pkg_build_deps=(core/git core/cacerts core/python core/which)
-# pkg_lib_dirs=(lib)
-# pkg_include_dirs=(include)
 pkg_bin_dirs=(bin)
-# pkg_pconfig_dirs=(lib/pconfig)
-# pkg_svc_run="haproxy -f $pkg_svc_config_path/haproxy.conf"
-# pkg_exports=( #   [host]=srv.address
-#   [port]=srv.port
-#   [ssl-port]=srv.ssl.port
-# )
-# pkg_exposes=(port ssl-port)
-# pkg_binds=(
-#   [database]="port host"
-# )
-# pkg_binds_optional=(
-#   [storage]="port host"
-# )
-# pkg_interpreters=(bin/bash)
-# pkg_svc_user="hab"
-# pkg_svc_group="$pkg_svc_user"
+pkg_exports=(
+  [port]=server.port
+)
+pkg_exposes=(port)
 # pkg_description="Some description."
 # pkg_upstream_url="http://example.com/project-name"
 
