@@ -1,5 +1,5 @@
 [gunicorn]
-host = localhost
+host = "localhost"
 port = 8000
 workers = 4
-app_module = flask_run:app
+app_module = "flask_run:app"
