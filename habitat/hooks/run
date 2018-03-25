@@ -3,8 +3,10 @@
 # redirect stderr
 exec 2>&1
 
+cd {{ pkg.path }}/bkrmk
+
 # Run the command
-exec {{ pkg.path }}/bkmrk/.venv/bin/gunicorn \
+exec .venv/bin/gunicorn \
     -b {{ cfg.gunicorn.host }}:{{ cfg.gunicorn.port }} \
     -w {{ cfg.gunicorn.workers }} \
     {{ cfg.gunicorn.app_module }} 
