@@ -1,5 +1,3 @@
-HAB_BLDR_CHANNEL=unstable
-
 pkg_name=bkmrk
 pkg_origin=bkmrk
 # TODO: set pkg_version to bumpversion
