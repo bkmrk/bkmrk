@@ -7,15 +7,19 @@
 <h2>{{ author.name }}</h2>
 {% endfor %}
 <hr>
-{% if form %}
-{{ wtf.quick_form(form) }}
+{% if book not in current_user.books %}
+<a href="{{ url_for('main.add_book', id=book.id) }}">+Book</a>
+{% else %}
+<a href="{{ url_for('main.quote', book_id=book.id) }}">+Quote</a>
 {% endif %}
 {% if quotes %}
 {% for quote in quotes %}
 <br>
 <p>{{ quote.page }}</p>
 <p>&emsp;<i>{{ quote.quote }}</i></p>
+{% if quote.comments %}
 <p>&emsp;"{{ quote.comments }}"</p>
+{% endif %}
 {% endfor %}
 {% endif %}
 {% endblock %}

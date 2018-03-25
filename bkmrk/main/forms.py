@@ -31,14 +31,6 @@ class SearchForm(FlaskForm):
             raise ValidationError("ISBN length should be either 10 or 13 digits.")
 
 
-class AddBookButton(FlaskForm):
-    submit = SubmitField('Add Book')
-
-
-class AddQuoteButton(FlaskForm):
-    submit = SubmitField('Add Quote')
-
-
 class AddQuoteForm(FlaskForm):
     quote = TextAreaField('Quote', validators=[DataRequired()])
     page = IntegerField('Page Number', validators=[DataRequired()])

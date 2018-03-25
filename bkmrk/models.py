@@ -16,6 +16,16 @@ user_book = db.Table('user_book',
     db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
 )
 
+book_publisher = db.Table('book_publisher',
+    db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True),
+    db.Column('publisher_id', db.Integer, db.ForeignKey('publisher.id'), primary_key=True)
+)
+
+book_author = db.Table('book_author',
+    db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True),
+    db.Column('author_id', db.Integer, db.ForeignKey('author.id'), primary_key=True),
+)
+
 
 @login.user_loader
 def load_user(id):
@@ -28,6 +38,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
+    default_book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
 
     books = db.relationship('Book', secondary=user_book)
     quotes = db.relationship('Quote', backref='user')
@@ -54,9 +65,40 @@ class User(UserMixin, db.Model):
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    isbn = db.Column(db.String(13), nullable=True)
-
+    title = db.Column(db.String(128))
+    subtitle = db.Column(db.String(128), nullable=True)
     quotes = db.relationship('Quote', backref='book')
+    publishers = db.relationship('Publisher', secondary=book_publisher)
+    authors = db.relationship('Author', secondary=book_author)
+    identifier_id = db.Column(db.Integer, db.ForeignKey('identifier.id'))
+    identifier = db.relationship('Identifier', backref=db.backref('book', uselist=False))
+    ol_book_id = db.Column(db.Integer, db.ForeignKey('open_library_book.key'))
+    ol_book = db.relationship('OpenLibraryBook', backref=db.backref('book', uselist=False))
+
+
+class OpenLibraryBook(db.Model):
+    key = db.Column(db.String(32), primary_key=True)
+    url = db.Column(db.String(256))
+    cover_s = db.Column(db.String(256))
+    cover_m = db.Column(db.String(256))
+    cover_l = db.Column(db.String(256))
+    publish_date = db.Column(db.String(32))
+
+
+class Author(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256))
+
+
+class Publisher(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128))
+
+
+class Identifier(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    isbn = db.Column(db.String(13))
+    olid = db.Column(db.String(32), nullable=True)
 
 
 class Quote(db.Model):

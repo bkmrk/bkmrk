@@ -1,12 +1,21 @@
+from openlibrary_api.client import OpenLibraryClient
+
 from flask import render_template, flash, redirect, url_for, request, current_app
 from flask_login import current_user, login_required
 from werkzeug.urls import url_parse
 
 from bkmrk import db
-from bkmrk import utils
-from bkmrk.main.forms import EditProfileForm, SearchForm, AddBookButton, AddQuoteButton, AddQuoteForm
-from bkmrk.models import User, Book, Quote
+from bkmrk.main.forms import EditProfileForm, SearchForm, AddQuoteForm
+from bkmrk.models import User, Book, Quote, Author, OpenLibraryBook, Publisher, Identifier
 from bkmrk.main import bp
+
+
+def get_openlibrary_book(isbn, client=None):
+    if client is None:
+        client = OpenLibraryClient()
+    bibkey = 'ISBN:{}'.format(isbn)
+    ol_book = client.books(bibkeys=bibkey, format='json', jscmd='data')
+    return ol_book.get(bibkey)
 
 
 @bp.before_app_request
@@ -20,12 +29,6 @@ def before_request():
 @login_required
 def index():
     books = current_user.books
-    def add_book_info(book):
-        id = book.id
-        book = utils.get_openlibrary_book(book.isbn)
-        book['id'] = id
-        return book
-    books = [add_book_info(book) for book in books]
     return render_template(
         'index.html',
         title='Home',
@@ -37,11 +40,9 @@ def index():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    books = current_user.books
     return render_template(
         'user.html',
         user=user,
-        books=books,
     )
 
 
@@ -61,6 +62,65 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 
+def add_openlibrary_book_to_databases(ol_book_json):
+    publishers = []
+    ol_publishers = ol_book_json.get('publishers')
+    for publisher in ol_publishers:
+        name = publisher.get('name')
+        p = Publisher.query.filter_by(name=name).first()
+        if p is None:
+            p = Publisher(name=name)
+            db.session.add(p)
+        publishers.append(p)
+    db.session.commit()
+
+    authors = []
+    ol_authors = ol_book_json.get('authors')
+    for author in ol_authors:
+        name = author.get('name')
+        a = Author.query.filter_by(name=name).first()
+        if a is None:
+            a = Author(name=name)
+            db.session.add(a)
+        authors.append(a)
+    db.session.commit()
+
+    # TODO: Verify if I can always grab the first element
+    isbn = ol_book_json.get('identifiers').get('isbn_13')[0]
+    olid = ol_book_json.get('identifiers').get('openlibrary')[0]
+    identifier = Identifier.query.filter_by(isbn=isbn).first()
+    if identifier is None:
+        identifier = Identifier(isbn=isbn, olid=olid)
+        db.session.add(identifier)
+    db.session.commit()
+
+    key = ol_book_json.get('key')
+    ol_book = OpenLibraryBook.query.filter_by(key=key).first()
+    if ol_book is None:
+        ol_book = OpenLibraryBook(
+            key=key,
+            url=ol_book_json.get('url'),
+            cover_s=ol_book_json.get('cover').get('small'),
+            cover_m=ol_book_json.get('cover').get('medium'),
+            cover_l=ol_book_json.get('cover').get('large'),
+            publish_date=ol_book_json.get('publish_date'),
+        )
+        db.session.add(ol_book)
+    db.session.commit()
+
+    book = identifier.book
+    if book is None:
+        book = Book(
+            title=ol_book_json.get('title'),
+            subtitle=ol_book_json.get('subtitle'),
+            publishers=publishers, authors=authors,
+            identifier=identifier,
+            ol_book=ol_book,
+        )
+        db.session.add(book)
+    db.session.commit()
+
+
 @bp.route('/search', methods=['GET', 'POST'])
 @login_required
 def search():
@@ -75,15 +135,12 @@ def search():
         if isbn:
             if len(isbn) == 10:
                 isbn = '978{}'.format(isbn)
-            ol_book = utils.get_openlibrary_book(isbn)
+            ol_book = get_openlibrary_book(isbn)
             if ol_book:
-                book = Book.query.filter_by(isbn=isbn).first()
-                if book is None:
-                    book = Book(isbn=isbn)
-                    db.session.add(book)
-                    db.session.commit()
-                ol_book['id'] = book.id
-                books.append(ol_book)
+                add_openlibrary_book_to_databases(ol_book)
+                identifier = Identifier.query.filter_by(isbn=isbn).first()
+                book = identifier.book
+                books.append(book)
     return render_template(
         'search.html',
         title='Search',
@@ -97,35 +154,29 @@ def search():
 def book(id):
     book = Book.query.filter_by(id=id).first_or_404()
 
-    # figure out if the user has added this book
-    if book not in current_user.books:
-        form = AddBookButton()
-    else:
-        form = AddQuoteButton()
-
-    if form.validate_on_submit():
-        if book in current_user.books:
-            return redirect(url_for('main.quote', book_id=book.id))
-        else:
-            current_user.books.append(book)
-            db.session.commit()
-        return redirect(url_for('main.book', id=book.id))
-
     # Get the quotes that belong to this user and to this book
     book_quotes = book.quotes
     user_quotes = current_user.quotes
     quotes = list(set(book_quotes).intersection(set(user_quotes)))
-    print(quotes)
     quotes = sorted(quotes, key=lambda quote: quote.page)
 
-    ol_book = utils.get_openlibrary_book(book.isbn)
     return render_template(
         'book.html',
-        title=ol_book.get('title'),
-        form=form,
-        book=ol_book,
+        title=book.title,
+        book=book,
         quotes=quotes,
     )
+
+
+@bp.route('/book/<id>/add')
+@login_required
+def add_book(id):
+    book = Book.query.filter_by(id=id).first_or_404()
+
+    if book not in current_user.books:
+        current_user.books.append(book)
+        db.session.commit()
+    return redirect(url_for('main.book', id=book.id))
 
 
 @bp.route('/quote', methods=['GET', 'POST'])
@@ -140,7 +191,6 @@ def quote():
             title='',
         )
 
-    ol_book = utils.get_openlibrary_book(book.isbn)
     form = AddQuoteForm()
 
     if form.validate_on_submit():
@@ -156,6 +206,6 @@ def quote():
 
     return render_template(
         'quote.html',
-        title=ol_book.get('title'),
+        title=book.title,
         form=form,
     )
