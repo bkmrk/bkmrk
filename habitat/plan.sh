@@ -8,13 +8,8 @@ pkg_license=("MIT")
 pkg_filename="${pkg_name}-${pkg_version}.tar.bz2"
 pkg_deps=(core/python)
 pkg_build_deps=(core/git core/cacerts core/python core/which)
-pkg_bin_dirs=(bin)
-pkg_exports=(
-  [port]=server.port
-)
-pkg_exposes=(port)
 # pkg_description="Some description."
-# pkg_upstream_url="http://example.com/project-name"
+pkg_upstream_url="http://github.com/vicyap/bkmrk"
 
 do_download() {
   export GIT_SSL_CAINFO="$(pkg_path_for core/cacerts)/ssl/certs/cacert.pem"
