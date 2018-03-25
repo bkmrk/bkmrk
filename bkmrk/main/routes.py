@@ -4,8 +4,8 @@ from werkzeug.urls import url_parse
 
 from bkmrk import db
 from bkmrk import utils
-from bkmrk.main.forms import EditProfileForm, SearchForm, AddBookForm, RemoveBookForm
-from bkmrk.models import User, Book
+from bkmrk.main.forms import EditProfileForm, SearchForm, AddBookButton, AddQuoteButton, AddQuoteForm
+from bkmrk.models import User, Book, Quote
 from bkmrk.main import bp
 
 
@@ -20,7 +20,12 @@ def before_request():
 @login_required
 def index():
     books = current_user.books
-    books = [utils.get_openlibrary_book(book.isbn) for book in books]
+    def add_book_info(book):
+        id = book.id
+        book = utils.get_openlibrary_book(book.isbn)
+        book['id'] = id
+        return book
+    books = [add_book_info(book) for book in books]
     return render_template(
         'index.html',
         title='Home',
@@ -93,19 +98,25 @@ def book(id):
     book = Book.query.filter_by(id=id).first_or_404()
 
     # figure out if the user has added this book
-    if book in current_user.books:
-        form = RemoveBookForm()
+    if book not in current_user.books:
+        form = AddBookButton()
     else:
-        form = AddBookForm()
+        form = AddQuoteButton()
 
     if form.validate_on_submit():
         if book in current_user.books:
-            current_user.books.remove(book)
-            db.session.commit()
+            return redirect(url_for('main.quote', book_id=book.id))
         else:
             current_user.books.append(book)
             db.session.commit()
         return redirect(url_for('main.book', id=book.id))
+
+    # Get the quotes that belong to this user and to this book
+    book_quotes = book.quotes
+    user_quotes = current_user.quotes
+    quotes = list(set(book_quotes).intersection(set(user_quotes)))
+    print(quotes)
+    quotes = sorted(quotes, key=lambda quote: quote.page)
 
     ol_book = utils.get_openlibrary_book(book.isbn)
     return render_template(
@@ -113,4 +124,38 @@ def book(id):
         title=ol_book.get('title'),
         form=form,
         book=ol_book,
+        quotes=quotes,
+    )
+
+
+@bp.route('/quote', methods=['GET', 'POST'])
+@login_required
+def quote():
+    book_id = request.args.get('book_id')
+    book = Book.query.filter_by(id=book_id).first()
+    if book is None:
+        flash('book_id={} does not exist'.format(book_id))
+        return render_template(
+            'quote.html',
+            title='',
+        )
+
+    ol_book = utils.get_openlibrary_book(book.isbn)
+    form = AddQuoteForm()
+
+    if form.validate_on_submit():
+        quote = Quote(
+            user_id=current_user.id,
+            book_id=book_id,
+            quote=form.quote.data,
+            page=form.page.data,
+            comments=form.comments.data)
+        db.session.add(quote)
+        db.session.commit()
+        return redirect(url_for('main.book', id=book_id))
+
+    return render_template(
+        'quote.html',
+        title=ol_book.get('title'),
+        form=form,
     )

@@ -5,10 +5,10 @@ run=pipenv run
 env=FLASK_APP=flask_run.py FLASK_DEBUG=1
 
 clean-db:
-	rm -rf migrations
-	rm bkmrk/app.db
+	-rm -rf migrations
+	-rm bkmrk/app.db
 
-db:
+db: clean-db
 	$(env) $(run) flask db init
 	$(env) $(run) flask db migrate
 	$(env) $(run) flask db upgrade

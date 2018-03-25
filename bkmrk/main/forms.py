@@ -1,7 +1,7 @@
 from flask import request
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import ValidationError, DataRequired, Length
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField
+from wtforms.validators import ValidationError, DataRequired, Length, Optional
 
 from bkmrk.models import User
 
@@ -31,9 +31,16 @@ class SearchForm(FlaskForm):
             raise ValidationError("ISBN length should be either 10 or 13 digits.")
 
 
-class AddBookForm(FlaskForm):
+class AddBookButton(FlaskForm):
     submit = SubmitField('Add Book')
 
 
-class RemoveBookForm(FlaskForm):
-    submit = SubmitField('Remove Book')
+class AddQuoteButton(FlaskForm):
+    submit = SubmitField('Add Quote')
+
+
+class AddQuoteForm(FlaskForm):
+    quote = TextAreaField('Quote', validators=[DataRequired()])
+    page = IntegerField('Page Number', validators=[DataRequired()])
+    comments = TextAreaField('Comments', validators=[Optional()])
+    submit = SubmitField('Submit')

@@ -30,7 +30,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(140))
 
     books = db.relationship('Book', secondary=user_book)
-    # quotes = db.relationship('Quote', backref='user', lazy='dynamic')
+    quotes = db.relationship('Quote', backref='user')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -56,17 +56,14 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     isbn = db.Column(db.String(13), nullable=True)
 
+    quotes = db.relationship('Quote', backref='book')
+
 
 class Quote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
-    book = db.relationship('Book')
-
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User')
-
     quote = db.Column(db.Text)
-    page_no = db.Column(db.Integer)
+    page = db.Column(db.Integer)
     comments = db.Column(db.Text, nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)

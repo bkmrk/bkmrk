@@ -2,11 +2,20 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-{% if form %}
-{{ wtf.quick_form(form) }}
-{% endif %}
 <h1>{{ book.title }}</h1>
 {% for author in book.authors %}
 <h2>{{ author.name }}</h2>
 {% endfor %}
+<hr>
+{% if form %}
+{{ wtf.quick_form(form) }}
+{% endif %}
+{% if quotes %}
+{% for quote in quotes %}
+<br>
+<p>{{ quote.page }}</p>
+<p>&emsp;<i>{{ quote.quote }}</i></p>
+<p>&emsp;"{{ quote.comments }}"</p>
+{% endfor %}
+{% endif %}
 {% endblock %}
