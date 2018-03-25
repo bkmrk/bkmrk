@@ -3,7 +3,7 @@
 # redirect stderr
 exec 2>&1
 
-cd {{ pkg.path }}/bkrmk
+cd {{ pkg.path }}/bkmrk
 
 # Run the command
 exec .venv/bin/gunicorn \
