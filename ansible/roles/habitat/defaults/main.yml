@@ -1,0 +1,7 @@
+---
+habitat__packages: []
+
+habitat__install_script_url: https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.sh
+habitat__install_script: /tmp/hab_install.sh
+habitat__systemd_unit_path: /etc/systemd/system/habitat.service
+habitat__service_name: habitat

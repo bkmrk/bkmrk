@@ -1,0 +1,21 @@
+---
+- name: Download habitat
+  get_url:
+    url: "{{ habitat__install_script_url }}"
+    dest: "{{ habitat__install_script }}"
+  register: download_state
+
+- name: Install habitat
+  command: /bin/bash "{{ habitat__install_script }}"
+  when: download_state.src is defined
+  notify: hab install packages
+
+- name: Install {{ habitat__systemd_unit_path }}
+  copy:
+    src: "{{ habitat__service_name }}.service"
+    dest: "{{ habitat__systemd_unit_path }}"
+  register: systemd_unit
+  notify:
+    - enable habitat service
+    - restart habitat service
+    - ensure habitat service

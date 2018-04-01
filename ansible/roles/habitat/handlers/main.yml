@@ -1,0 +1,25 @@
+---
+- name: enable habitat service
+  systemd:
+    name: "{{ habitat__service_name }}"
+    enabled: true
+    daemon_reload: true
+  when: systemd_unit.src is defined
+
+- name: restart habitat service
+  systemd:
+    name: "{{ habitat__service_name }}"
+    state: restarted
+    daemon_reload: true
+  when: systemd_unit.src is defined
+
+- name: ensure habitat service
+  service:
+    name: "{{ habitat__service_name }}"
+    state: started
+  when: systemd_unit.src is defined
+
+- name: hab install packages
+  command: "hab install --channel {{ item.channel | stable }} {{ item.name }}"
+  with_items:
+    - "{{ habitat__packages }}"
