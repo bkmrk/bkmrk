@@ -2,8 +2,7 @@ language: python
 
 jobs:
   include:
-    - stage: py2
-      python: 2.7
+    - python: 2.7
       script: >
         pip install pipenv &&
         pushd ansible &&
@@ -11,8 +10,7 @@ jobs:
         make check &&
         make -C ansible/roles/habitat check &&
         popd
-    - stage: py3
-      python: 3.6
+    - python: 3.6
       script: >
         pip install pipenv &&
         pipenv install --three --dev &&
