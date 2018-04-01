@@ -5,7 +5,7 @@ python:
 install:
     - pip install pipenv
     - pipenv install --dev
-    - cd ansible && pipenv install
+    - pushd ansible && pipenv install && popd
 
 script:
     - make check
