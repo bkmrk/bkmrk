@@ -1,8 +1,8 @@
 # bkmrk
 
-[![Build Status](https://travis-ci.org/vicyap/bkmrk.svg?branch=master)](https://travis-ci.org/vicyap/bkmrk)
-[![Coverage Status](https://coveralls.io/repos/github/vicyap/bkmrk/badge.svg?branch=master)](https://coveralls.io/github/vicyap/bkmrk?branch=master)
-[![Maintainability](https://api.codeclimate.com/v1/badges/f8cc867b3d1ec2ddd655/maintainability)](https://codeclimate.com/github/vicyap/bkmrk/maintainability)
+[![Build Status](https://travis-ci.org/bkmrk/bkmrk.svg?branch=master)](https://travis-ci.org/bkmrk/bkmrk)
+[![Coverage Status](https://coveralls.io/repos/github/bkmrk/bkmrk/badge.svg?branch=master)](https://coveralls.io/github/bkmrk/bkmrk?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/50e6191b6073bf7f691f/maintainability)](https://codeclimate.com/github/bkmrk/bkmrk/maintainability)
 
 ---
 
