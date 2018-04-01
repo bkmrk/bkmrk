@@ -1,7 +1,0 @@
----
-- name: Make init
-  make:
-      chdir: /opt/bkmrk/bkmrk/
-      target: init
-  become: yes
-  become_user: bkmrk

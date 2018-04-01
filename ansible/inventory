@@ -1,2 +1,6 @@
-[webservers]
-beta.bkmrk.life ansible_become=true
+app_servers:
+  hosts:
+    beta.bkmrk.life
+    # 165.227.8.118
+
+# vi: set ft=yaml :

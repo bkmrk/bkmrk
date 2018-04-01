@@ -1,4 +1,0 @@
----
-- name: Add bkmrk user
-  user:
-      name: bkmrk

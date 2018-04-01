@@ -1,6 +1,75 @@
 ---
-# file: app.yml
-- hosts: webservers
+- hosts: app_servers
+  become: true
+
+  vars:
+    domain: beta.bkmrk.life
+
+    certbot_admin_email: mail.bkmrk@gmail.com
+    certbot_create_if_missing: true
+    certbot_certs:
+      - domains:
+          - "{{ domain }}"
+
+    nginx_vhosts:
+      - listen: "443 ssl"
+        filename: "{{ domain }}.443.conf"
+        server_name: "{{ domain }}"
+        root: "/var/www/html"
+        index: "index.html index.htm"
+        access_log: "/var/log/bkrmk.access.log"
+        error_log: "/var/log/bkmrk.error.log"
+        extra_parameters: |
+          location / {
+              proxy_pass http://localhost:8000;
+              proxy_redirect off;
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          }
+
+          listen [::]:443 ssl ipv6only=on;
+          ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
+          ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
+          include /etc/letsencrypt/options-ssl-nginx.conf;
+          ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+      - listen: "80"
+        filename: "{{ domain }}.80.conf"
+        server_name: "{{ domain }}"
+        return: "301 https://{{ domain }}"
+
+    habitat__packages:
+      - name: bkmrk/bkmrk
+        channel: unstable
+
+  pre_tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install cron
+      apt:
+        name: cron
+
   roles:
-      - common
-      - app
+    - geerlingguy.nginx
+    - geerlingguy.certbot
+    - habitat
+
+  tasks:
+    - name: Ensure services
+      service:
+        name: "{{ item }}"
+        state: started
+      with_items:
+        - habitat
+        - nginx
+
+    - name: Test secure connection to SSL domain
+      uri:
+        url: "https://{{ domain }}/auth/login"
+        status_code: 200
+      delegate_to: localhost
+      become: false
