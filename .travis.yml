@@ -3,6 +3,7 @@ language: python
 jobs:
   include:
     - stage: test
+      # molecule requires python 2 to run :(
       - python: 2.7
         script: >
           pip install pipenv &&
@@ -10,17 +11,10 @@ jobs:
           pipenv install --two --dev &&
           make check &&
           make -C roles/habitat check &&
-          popd
       - python: 3.6
         script: >
           pip install pipenv &&
           pipenv install --three --dev &&
           make check &&
-          make test
-    - stage: coverage
-      - python: 3.6
-        script: >
-          pip install pipenv &&
-          pipenv install --three --dev &&
           make coverage &&
           pipenv run coveralls
