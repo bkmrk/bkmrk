@@ -4,7 +4,8 @@ python:
 
 install:
     - pip install pipenv
-    - pipenv install --three --dev
+    - pipenv install --dev
+    - cd ansible && pipenv install
 
 script:
     - make check

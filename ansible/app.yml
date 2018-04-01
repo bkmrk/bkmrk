@@ -43,6 +43,13 @@
       - name: bkmrk/bkmrk
         channel: unstable
 
+    habitat__services:
+      - name: bkmrk/bkmrk
+        group: unstable
+        channel: unstable
+        strategy: at-once
+        force: true
+
   pre_tasks:
     - name: Update apt cache
       apt:

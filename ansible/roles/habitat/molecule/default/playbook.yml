@@ -4,3 +4,8 @@
   roles:
     - role: habitat
       become: true
+      vars:
+        habitat__packages:
+          - name: core/nginx
+        habitat__services:
+          - name: core/nginx

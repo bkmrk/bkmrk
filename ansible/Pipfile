@@ -10,6 +10,7 @@ name = "pypi"
 molecule = "*"
 python-vagrant = "*"
 yamllint = "*"
+pytest-xdist = "*"
 
 
 [requires]

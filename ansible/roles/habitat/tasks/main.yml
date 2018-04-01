@@ -8,14 +8,38 @@
 - name: Install habitat
   command: /bin/bash "{{ habitat__install_script }}"
   when: download_state.src is defined
-  notify: hab install packages
 
 - name: Install {{ habitat__systemd_unit_path }}
   copy:
     src: "{{ habitat__service_name }}.service"
     dest: "{{ habitat__systemd_unit_path }}"
-  register: systemd_unit
   notify:
     - enable habitat service
     - restart habitat service
     - ensure habitat service
+
+- name: Hab install packages
+  command: >
+    hab install
+    {% if item.force is defined and item.force %}--force {% endif %}
+    {% if item.channel is defined %}--channel {{ item.channel }} {% endif %}
+    {{ item.name }}
+  with_items:
+    - "{{ habitat__packages }}"
+  tags:
+    - skip_ansible_lint
+
+- name: Hab load services
+  command: >
+    hab svc load
+    {% if item.force is defined and item.force %}--force {% endif %}
+    {% if item.channel is defined %}--channel {{ item.channel }} {% endif %}
+    {% if item.group is defined %}--group {{ item.group }} {% endif %}
+    {% if item.strategy is defined %}--strategy {{ item.strategy }} {% endif %}
+    {% if item.topology is defined %}--topology {{ item.topology }} {% endif %}
+    {{ item.name }}
+
+  with_items:
+    - "{{ habitat__services }}"
+  tags:
+    - skip_ansible_lint
