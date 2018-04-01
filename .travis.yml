@@ -5,12 +5,15 @@ python:
 install:
     - pip install pipenv
     - pipenv install --dev
-    - pushd ansible && pipenv install && popd
 
 script:
+    - pushd ansible
+    - pipenv install --two
     - make check
-    - make -C ansible check
-    - make -C ansible/roles/habitat check
+    - make -C roles/habitat check
+    - popd
+    - pipenv install --three
+    - make check
     - make test
 
 after_script:
