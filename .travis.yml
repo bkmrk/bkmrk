@@ -18,3 +18,12 @@ jobs:
           make check &&
           make coverage &&
           pipenv run coveralls
+    - stage: deploy
+      deploy:
+        provider: script
+        script: bash scripts/deploy.sh
+
+stages:
+  - test
+  - name: deploy
+    if: branch = master
