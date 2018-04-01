@@ -31,7 +31,7 @@ test:
 	$(run) pytest $(app)
 
 coverage:
-	$(run) pytest --cov-report term-missing --cov=./ $(app)
+	$(run) pytest --cov-report term-missing --cov=./$(app) $(app)
 
 run:
 	$(env) $(run) flask run
