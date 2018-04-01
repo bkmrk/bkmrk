@@ -18,8 +18,9 @@ jobs:
         make coverage &&
         pipenv run coveralls
     - stage: deploy
+      script: echo "Deploying..."
       deploy:
         provider: script
-        script: echo 'Deploy!'
+        script: skip
         on:
-          branch: master
+          tags: true
