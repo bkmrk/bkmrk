@@ -40,4 +40,6 @@ def create_app(config_class=Config):
     from bkmrk.main import bp as main_bp
     app.register_blueprint(main_bp)
 
+    utils.add_stream_logger(app)
+
     return app

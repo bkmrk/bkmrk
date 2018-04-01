@@ -13,7 +13,6 @@ pycodestyle = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-xdist = "*"
-molecule = "*"
 
 
 [packages]

@@ -9,6 +9,7 @@ install:
 script:
     - make check
     - make -C ansible check
+    - make -C ansible/roles/habitat check
     - make test
 
 after_script:
